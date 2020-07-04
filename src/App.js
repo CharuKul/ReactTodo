@@ -66,10 +66,10 @@ export default class TodoApp extends React.Component {
 
     const todo = { text: val, id: this.state.currentId };
     this.state.todoList.push(todo);
-    this.setState({
+    this.setState(state => ({
       todoList: this.state.todoList,
-      currentId: this.state.currentId + 1
-    });
+      currentId: state.currentId + 1
+    }));
   }
 
   // Remove todo handler
