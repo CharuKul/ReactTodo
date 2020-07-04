@@ -1,8 +1,8 @@
 import React from "react";
 import "./styles.css";
 
+// Input box
 const TodoBox = ({ handleAdd }) => {
-  // Input box
   let input;
 
   return (
@@ -24,9 +24,8 @@ const TodoBox = ({ handleAdd }) => {
   );
 };
 
+// Todo node
 const Todo = ({ todo, remove }) => {
-  // Each Todo node
-
   return (
     <div>
       {todo.text + "     "}
@@ -41,6 +40,7 @@ const Todo = ({ todo, remove }) => {
   );
 };
 
+// Todo List
 const TodoList = ({ todoList, remove }) => {
   const todoNode = todoList.map(todo => {
     return <Todo todo={todo} key={todo.id} remove={remove} />;
