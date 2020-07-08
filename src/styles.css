@@ -2,3 +2,11 @@
   font-family: sans-serif;
   text-align: center;
 }
+
+li {
+  width: fit-content;
+}
+
+li button {
+  margin: 10px;
+}

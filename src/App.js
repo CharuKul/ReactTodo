@@ -1,79 +1,35 @@
 import React from "react";
 import "./styles.css";
-
-// Input box
-const TodoBox = ({ handleAdd }) => {
-  let input;
-
-  return (
-    <div>
-      <input
-        ref={node => {
-          input = node;
-        }}
-      />
-      <button
-        onClick={() => {
-          handleAdd(input.value);
-          input.value = "";
-        }}
-      >
-        +
-      </button>
-    </div>
-  );
-};
-
-// Todo node
-const Todo = ({ todo, remove }) => {
-  return (
-    <div>
-      {todo.text + "     "}
-      <button
-        onClick={() => {
-          remove(todo.id);
-        }}
-      >
-        -
-      </button>
-    </div>
-  );
-};
-
-// Todo List
-const TodoList = ({ todoList, remove }) => {
-  const todoNode = todoList.map(todo => {
-    return <Todo todo={todo} key={todo.id} remove={remove} />;
-  });
-  return <div>{todoNode}</div>;
-};
+import TodoBox from "./Components/TodoBox";
+import TodoList from "./Components/TodoList";
 
 export default class TodoApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       todoList: [],
-      currentId: 0
+      currentId: 0,
+      test: false
     };
   }
 
   // Add todo handler
-  handleAdd(val) {
-    if (!val || val === "") {
+  handleAdd = val => {
+    if (!val) {
       window.alert("Empty todo");
       return;
     }
 
     const todo = { text: val, id: this.state.currentId };
-    this.state.todoList.push(todo);
-    this.setState(state => ({
-      todoList: this.state.todoList,
-      currentId: state.currentId + 1
-    }));
-  }
+    var newList = [...this.state.todoList, todo];
+    this.setState({
+      todoList: newList,
+      currentId: this.state.currentId + 1
+    });
+  };
 
   // Remove todo handler
-  handleRemove(id) {
+  handleRemove = id => {
     var remainingItems = this.state.todoList.filter(todo => {
       if (todo.id !== id) {
         return todo;
@@ -81,17 +37,31 @@ export default class TodoApp extends React.Component {
     });
 
     this.setState({ todoList: remainingItems });
-  }
+  };
+
+  // Remove todo handler
+  handleEdit = (id, value) => {
+    var updatedItems = this.state.todoList.filter(todo => {
+      if (todo.id === id) {
+        todo.text = value;
+      }
+      return todo;
+    });
+
+    this.setState({ todoList: updatedItems });
+  };
 
   render() {
+    const { todoList } = this.state;
     return (
       <div className="App" id="App">
         <h1>TO DO APP</h1>
         <div>
-          <TodoBox handleAdd={this.handleAdd.bind(this)} />
+          <TodoBox handleAdd={this.handleAdd} />
           <TodoList
-            todoList={this.state.todoList}
-            remove={this.handleRemove.bind(this)}
+            todoList={todoList}
+            remove={this.handleRemove}
+            edit={this.handleEdit}
           />
         </div>
       </div>
